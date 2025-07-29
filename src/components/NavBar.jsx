@@ -10,7 +10,7 @@ function NavBar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  console.log("user in NavBar", user);
+  // console.log("user in NavBar", user);
   const handleLogOut = async () => {
     try {
       await axios.post(BASE_URL + "/logout", {}, { withCredentials: true });
@@ -22,7 +22,7 @@ function NavBar() {
   };
 
   return (
-    <div className="navbar bg-base-300 shadow-sm">
+    <div className="navbar bg-base-300  shadow-sm">
       <div className="flex-1 ">
         <Link to="/" className="btn btn-ghost bg-zinc-700  text-xl">
           devTinder

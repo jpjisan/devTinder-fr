@@ -12,7 +12,7 @@ function Body() {
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
 
-  console.log("user from body ", user);
+  // console.log("user from body ", user);
   const getUser = async () => {
     try {
       if (!user) {
@@ -35,7 +35,7 @@ function Body() {
   return (
     <div>
       <NavBar />
-      <div className="h-[90vh] flex items-center justify-center">
+      <div className="h-[90vh] flex items-center justify-center overflow-hidden">
         <Outlet />
       </div>
       <Footer />
