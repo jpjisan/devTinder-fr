@@ -8,6 +8,7 @@ import Feed from "./components/Feed";
 import EditProfile from "./components/EditProfile";
 import Connections from "./components/Connections";
 import Requests from "./components/Requests";
+import Stack from "./components/Stack";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
               <Route path="/editProfile" element={<EditProfile />}></Route>
               <Route path="/connections" element={<Connections />}></Route>
               <Route path="/requests" element={<Requests />}></Route>
+              <Route path="/stack" element={<Stack />}></Route>
             </Route>
           </Routes>
         </BrowserRouter>

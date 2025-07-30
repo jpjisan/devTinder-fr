@@ -4,29 +4,46 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { BASE_URL } from "../Base";
-import { setFeed } from "../utils/feedSlice";
+import { removeUserFromFeed, setFeed } from "../utils/feedSlice";
 import Loader from "./Loader";
 function Feed() {
   const users = useSelector((store) => store.feed);
   console.log(users);
+  const id = users?.[0]?._id;
+  console.log(id);
 
   const dispatch = useDispatch();
   const fetchFeed = async () => {
     try {
-      if (users) return;
+      // if (users) return;
       const res = await axios.get(BASE_URL + "/feed", {
         withCredentials: true,
       });
-      console.log(res);
+      console.log("fetch", res);
 
-      dispatch(setFeed(res.data[0]));
+      dispatch(setFeed(res.data));
     } catch (error) {
       console.log(error);
     }
   };
+
+  const requestHandler = async (status, id) => {
+    try {
+      const res = await axios.post(
+        BASE_URL + `/request/send/${status}/${id}`,
+        {},
+        { withCredentials: true }
+      );
+      dispatch(removeUserFromFeed(id));
+      fetchFeed();
+    } catch (error) {}
+  };
   useEffect(() => {
     fetchFeed();
   }, []);
+  if (users.length <= 0) {
+    return <h1>No more Users left</h1>;
+  }
   return !users ? (
     <Loader />
   ) : (
@@ -47,7 +64,7 @@ function Feed() {
           {/* Product Image */}
           <div className="relative w-[50vh]">
             <img
-              src={users?.profilePicture}
+              src={users[0]?.profilePicture}
               alt="user photo"
               className="w-full h-96 object-cover"
             />
@@ -59,17 +76,17 @@ function Feed() {
             <div className="flex items-end justify-between">
               <div>
                 <h2 className="text-xl font-bold mb-1">
-                  {users?.firstName + " " + users?.lastName}
+                  {users[0]?.firstName + " " + users[0]?.lastName}
                 </h2>
                 <p className="text-white/80 text-sm font-medium">
-                  {users?.gender} male
+                  {users[0]?.gender}
                 </p>
                 <p className="text-white/80 text-sm font-light ">
-                  {users?.about}
+                  {users[0]?.about}
                 </p>
               </div>
               <div className="text-right">
-                <p className="text-2xl font-bold">{users?.age}</p>
+                <p className="text-2xl font-bold">{users[0]?.age}</p>
               </div>
             </div>
 
@@ -90,11 +107,16 @@ function Feed() {
 
       {/* Action Buttons */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex items-center space-x-6">
-        <button className="w-14 h-14 bg-white rounded-full shadow-lg flex items-center justify-center border border-gray-100">
+        <button
+          onClick={() => requestHandler("ignored", id)}
+          className="w-14 h-14 bg-white rounded-full shadow-lg flex items-center justify-center border border-gray-100"
+        >
           <X className="w-6 h-6 text-red-500" />
         </button>
-
-        <button className="w-16 h-16 bg-gradient-to-r from-pink-500 to-red-500 rounded-full shadow-lg flex items-center justify-center">
+        <button
+          onClick={() => requestHandler("interested", id)}
+          className="w-16 h-16 bg-gradient-to-r from-pink-500 to-red-500 rounded-full shadow-lg flex items-center justify-center"
+        >
           <Heart className="w-7 h-7 text-white fill-current" />
         </button>
       </div>
