@@ -248,7 +248,7 @@ function EditProfile() {
                         {firstName + " " + lastName}
                       </h2>
                     </div>
-                    <p className="text-white/80 text-sm font-medium">
+                    <p className="text-white/80 capitalize text-sm font-medium">
                       {gender}
                     </p>
                     <p className="text-white/80 text-sm font-light ">{about}</p>

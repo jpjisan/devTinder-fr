@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { BASE_URL } from "../Base";
 import { setFeed } from "../utils/feedSlice";
+import Loader from "./Loader";
 function Feed() {
   const users = useSelector((store) => store.feed);
   console.log(users);
@@ -27,7 +28,7 @@ function Feed() {
     fetchFeed();
   }, []);
   return !users ? (
-    <h1>Loading</h1>
+    <Loader />
   ) : (
     <div className=" h-full flex items-center justify-center p-4 relative">
       {/* Card Stack Container */}
