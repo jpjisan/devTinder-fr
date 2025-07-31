@@ -9,6 +9,7 @@ import EditProfile from "./components/EditProfile";
 import Connections from "./components/Connections";
 import Requests from "./components/Requests";
 import Stack from "./components/Stack";
+import ResetPassword from "./components/ResetPassword";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/editProfile" element={<EditProfile />}></Route>
+              <Route path="/reset-password" element={<ResetPassword />}></Route>
               <Route path="/connections" element={<Connections />}></Route>
               <Route path="/requests" element={<Requests />}></Route>
               <Route path="/stack" element={<Stack />}></Route>

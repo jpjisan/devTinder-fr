@@ -32,7 +32,9 @@ function NavBar() {
         <div className="flex gap-2 mx-5 items-center">
           <div className="dropdown dropdown-end gap-2 flex">
             <div className="flex items-center justify-center">
-              <p className="font-semibold">Welcome, {user.firstName}</p>
+              <p className="font-semibold capitalize">
+                Welcome, {user.firstName}
+              </p>
             </div>
 
             <div
@@ -64,6 +66,11 @@ function NavBar() {
               <li>
                 <Link to="/requests" className="justify-between">
                   Requests
+                </Link>
+              </li>
+              <li>
+                <Link to="/reset-password" className="justify-between">
+                  Change Password
                 </Link>
               </li>
               <li>

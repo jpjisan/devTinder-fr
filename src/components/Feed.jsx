@@ -75,14 +75,14 @@ function Feed() {
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 text-white">
             <div className="flex items-end justify-between">
               <div>
-                <h2 className="text-xl font-bold mb-1">
+                <h2 className="text-xl capitalize font-bold mb-1">
                   {users[0]?.firstName + " " + users[0]?.lastName}
                 </h2>
-                <p className="text-white/80 text-sm font-medium">
+                <p className="text-white/80 capitalize text-sm font-medium">
                   {users[0]?.gender}
                 </p>
                 <p className="text-white/80 text-sm font-light ">
-                  {users[0]?.about}
+                  {users[0]?.about.slice(0, 50) + " . . ."}
                 </p>
               </div>
               <div className="text-right">
@@ -109,15 +109,15 @@ function Feed() {
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex items-center space-x-6">
         <button
           onClick={() => requestHandler("ignored", id)}
-          className="w-14 h-14 bg-white rounded-full shadow-lg flex items-center justify-center border border-gray-100"
+          className="w-14 h-14 bg-white hover:scale-110 rounded-full shadow-lg flex items-center justify-center border border-gray-100"
         >
-          <X className="w-6 h-6 text-red-500" />
+          <X className="w-6 h-6 hover:scale-130 text-red-500" />
         </button>
         <button
           onClick={() => requestHandler("interested", id)}
-          className="w-16 h-16 bg-gradient-to-r from-pink-500 to-red-500 rounded-full shadow-lg flex items-center justify-center"
+          className="w-16 h-16 bg-gradient-to-r hover: hover:scale-110  from-pink-500 to-red-500 rounded-full shadow-lg flex   items-center justify-center"
         >
-          <Heart className="w-7 h-7 text-white fill-current" />
+          <Heart className="w-7 h-7 hover:scale-125 text-white fill-current" />
         </button>
       </div>
     </div>

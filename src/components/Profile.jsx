@@ -5,13 +5,13 @@ import { Heart, X, PenLine } from "lucide-react";
 import { Link } from "react-router-dom";
 
 function Profile() {
-  const [firstName, setfirstName] = useState("");
-  const [lastName, setlastName] = useState("");
-  const [age, setage] = useState("");
-  const [gender, setgender] = useState("");
-  const [about, setabout] = useState("");
-  const [profilePicture, setprofilePicture] = useState("");
-  const [error, seterror] = useState("");
+  // const [firstName, setfirstName] = useState("");
+  // const [lastName, setlastName] = useState("");
+  // const [age, setage] = useState("");
+  // const [gender, setgender] = useState("");
+  // const [about, setabout] = useState("");
+  // const [profilePicture, setprofilePicture] = useState("");
+  // const [error, seterror] = useState("");
   const user = useSelector((store) => store.user);
   console.log(user);
 
@@ -49,18 +49,18 @@ function Profile() {
                     className="flex gap-3
                   "
                   >
-                    <h2 className="text-xl font-bold mb-1">
+                    <h2 className="text-xl capitalize font-bold mb-1">
                       {user?.firstName + " " + user?.lastName}
                     </h2>
                     <Link to="/editProfile">
                       <PenLine />
                     </Link>
                   </div>
-                  <p className="text-white/80 text-sm font-medium">
+                  <p className="text-white/80 text-sm capitalize font-medium">
                     {user?.gender}
                   </p>
                   <p className="text-white/80 text-sm font-light ">
-                    {user?.about}
+                    {user?.about.slice(0, 50) + " . . ."}
                   </p>
                 </div>
                 <div className="text-right">
