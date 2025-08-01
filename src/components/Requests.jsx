@@ -90,7 +90,7 @@ function Requests() {
     //     )}
     //   </ul>
     // </div>
-    <div className="max-w-2xl mx-auto p-6 h-full w-[30%]  min-h-screen">
+    <div className="max-w-2xl  mx-auto p-6 h-full w-full lg:w-[30%]  ">
       <div className="bg-gray-800 rounded-xl h-full shadow-sm border border-gray-700 overflow-hidden">
         {/* Header */}
         <div className="bg-gradient-to-r from-[#2A5470] to-[#4C4177] flex px-6 py-4">
@@ -117,7 +117,7 @@ function Requests() {
                 {requests.length}
               </span>
             </h2>
-            <div className="space-y-4">
+            <div className="space-y-4 overflow-y-auto">
               {requests.map((request) => (
                 <div
                   key={request.id}

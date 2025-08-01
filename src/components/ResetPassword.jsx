@@ -42,7 +42,7 @@ function ResetPassword() {
   };
 
   return (
-    <div className="w-full max-w-sm h-[65vh] overflow-y-auto  p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+    <div className="w-[90%]  max-w-sm  overflow-y-auto  p-10 lg:5 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
       {toast && (
         <div className="toast toast-top toast-center z-50">
           <div className="alert alert-success">
@@ -60,7 +60,7 @@ function ResetPassword() {
             for="password"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >
-            Your password
+            Enter Current Password
           </label>
           <input
             type="password"
@@ -78,7 +78,7 @@ function ResetPassword() {
             for="newPassword"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >
-            Your New password
+            Enter New Password
           </label>
           <input
             type="password"

@@ -49,7 +49,7 @@ function Connections() {
   }, []);
 
   return (
-    <div className="h-[95%] w-[25%] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-2xl shadow-2xl flex flex-col border border-slate-700/50 backdrop-blur-sm">
+    <div className="h-[95%] lg:w-[30%] w-[95%] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-2xl shadow-2xl flex flex-col border border-slate-700/50 backdrop-blur-sm">
       {/* Header with gradient */}
       <div className="p-6 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-t-2xl border-b border-slate-700/50">
         <div className="flex items-center justify-between mb-4">

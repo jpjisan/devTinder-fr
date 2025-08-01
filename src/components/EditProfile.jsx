@@ -86,7 +86,7 @@ function EditProfile() {
     <h1>Loading</h1>
   ) : (
     <>
-      <div className="flex ">
+      <div className="flex h-full  gap-4 px-10 py-5 flex-col md:flex-row overflow-y-auto">
         {toast && (
           <div className="toast toast-top toast-center z-50">
             <div className="alert alert-success">
@@ -94,7 +94,7 @@ function EditProfile() {
             </div>
           </div>
         )}
-        <form className="h-full max-w-md py-10" onSubmit={editProfileHandler}>
+        <form className="h-full max-w-md py-10 " onSubmit={editProfileHandler}>
           <div>
             <div className="relative z-0 w-full mb-5 group">
               <input
@@ -212,26 +212,26 @@ function EditProfile() {
           </button>
         </form>
 
-        <div className=" h-full flex items-center justify-center p-4 relative">
+        <div className=" h-full flex  items-center justify-center  relative">
           {/* Card Stack Container */}
-          <div className="relative w-full max-w-sm">
+          <div className="relative w-full h-[50vh] md:h-[90%] md:w-[80%]   max-w-sm">
             {/* Background Card */}
-            <div className="absolute inset-0 bg-white rounded-3xl shadow-lg transform scale-95 opacity-50">
+            <div className="absolute inset-0 h-full w-full bg-white rounded-3xl shadow-lg transform scale-95 opacity-50">
               <img
                 src="https://images.pexels.com/photos/1040945/pexels-photo-1040945.jpeg?auto=compress&cs=tinysrgb&w=800"
                 alt="classNameic Denim Jacket"
-                className="w-full h-96 object-cover rounded-t-3xl"
+                className="w-full h-full object-cover rounded-t-3xl"
               />
             </div>
 
             {/* Main Card */}
-            <div className="relative bg-white rounded-3xl shadow-2xl overflow-hidden">
+            <div className="relative h-full bg-white rounded-3xl shadow-2xl overflow-hidden">
               {/* Product Image */}
-              <div className="relative w-[50vh]">
+              <div className="relative h-full w-full">
                 <img
                   src={profilePicture}
                   alt="user photo"
-                  className="w-full h-96 object-cover"
+                  className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
               </div>
@@ -274,7 +274,7 @@ function EditProfile() {
           </div>
 
           {/* Action Buttons */}
-          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 flex items-center space-x-6">
+          <div className="absolute bottom-[-35px] md:bottom-0 left-1/2 transform -translate-x-1/2 flex items-center space-x-6">
             <button className="w-14 h-14 bg-white rounded-full shadow-lg flex items-center justify-center border border-gray-100">
               <X className="w-6 h-6 text-red-500" />
             </button>
