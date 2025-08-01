@@ -10,7 +10,7 @@ import { Check, X, User, UserPlus, Clock } from "lucide-react";
 function Requests() {
   const dispatch = useDispatch();
   const requests = useSelector((store) => store.requests);
-  console.log(requests);
+  // console.log(requests);
 
   const fetchRequests = async () => {
     // if (requests.length > 0) {
@@ -29,14 +29,14 @@ function Requests() {
   };
   const reviewRequestHandler = async (status, id) => {
     try {
-      console.log(id);
+      // console.log(id);
 
       const res = await axios.post(
         BASE_URL + `/request/review/${status}/${id}`,
         {},
         { withCredentials: true }
       );
-      console.log(res.data.connectionRequest);
+      // console.log(res.data.connectionRequest);
       fetchRequests();
     } catch (error) {
       console.log(error);

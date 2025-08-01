@@ -8,7 +8,7 @@ import { removeUserFromFeed, setFeed } from "../utils/feedSlice";
 import Loader from "./Loader";
 function Feed() {
   const users = useSelector((store) => store.feed);
-  console.log(users);
+  // console.log(users);
   const id = users?.[0]?._id;
   console.log(id);
 
@@ -19,7 +19,7 @@ function Feed() {
       const res = await axios.get(BASE_URL + "/feed", {
         withCredentials: true,
       });
-      console.log("fetch", res);
+      // console.log("fetch", res);
 
       dispatch(setFeed(res.data));
     } catch (error) {
@@ -82,7 +82,7 @@ function Feed() {
                   {users[0]?.gender}
                 </p>
                 <p className="text-white/80 text-sm font-light ">
-                  {users[0]?.about.slice(0, 50) + " . . ."}
+                  {users[0]?.about?.slice(0, 50) + " . . ."}
                 </p>
               </div>
               <div className="text-right">

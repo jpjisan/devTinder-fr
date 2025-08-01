@@ -28,7 +28,7 @@ function Connections() {
       const res = await axios.get(BASE_URL + "/user/connections", {
         withCredentials: true,
       });
-      console.log(res?.data?.user);
+      // console.log(res?.data?.user);
       // setusers(res?.data?.user);
       dispatch(setConnection(res?.data?.user));
     } catch (error) {

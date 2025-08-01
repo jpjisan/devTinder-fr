@@ -73,7 +73,7 @@ function EditProfile() {
         settoast(false);
       }, 3000);
 
-      console.log(res);
+      // console.log(res);
 
       dispatch(setUser(res?.data));
     } catch (error) {
