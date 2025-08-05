@@ -4,6 +4,7 @@ import { Heart, X } from "lucide-react";
 import axios from "axios";
 import { BASE_URL } from "../Base";
 import { setUser } from "../utils/userSlice";
+import { useNavigate } from "react-router-dom";
 
 function EditProfile() {
   const user = useSelector((store) => store.user);
@@ -19,6 +20,7 @@ function EditProfile() {
   const [error, seterror] = useState("");
   const [toast, settoast] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   // const onsSubmitHandler = async () => {
   //   e.preventDefault();
   //   try {
@@ -71,6 +73,7 @@ function EditProfile() {
       settoast(true);
       setTimeout(() => {
         settoast(false);
+        navigate("/");
       }, 3000);
 
       // console.log(res);
@@ -101,7 +104,7 @@ function EditProfile() {
                 type="text"
                 name="floating_first_name"
                 id="floating_first_name"
-                className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                className="block py-2.5 capitalize px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
                 value={firstName}
                 onChange={(e) => setfirstName(e.target.value)}
@@ -118,7 +121,7 @@ function EditProfile() {
                 type="text"
                 name="floating_last_name"
                 id="floating_last_name"
-                className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                className="block py-2.5 px-0 capitalize w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
                 value={lastName}
                 onChange={(e) => setlastName(e.target.value)}
@@ -160,7 +163,7 @@ function EditProfile() {
                 id="countries"
                 value={gender}
                 onChange={(e) => setgender(e.target.value)}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 capitalize border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               >
                 <option value="">Select</option>
                 <option value="male">male</option>
@@ -244,7 +247,7 @@ function EditProfile() {
                       className="flex gap-3
                   "
                     >
-                      <h2 className="text-xl font-bold mb-1">
+                      <h2 className="text-xl font-bold capitalize mb-1">
                         {firstName + " " + lastName}
                       </h2>
                     </div>

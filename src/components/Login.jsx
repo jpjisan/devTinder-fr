@@ -7,10 +7,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { BASE_URL } from "../Base";
 
 function Login() {
-  const [emailId, setemailId] = useState("neeraj.patel@example.com");
+  const [emailId, setemailId] = useState("");
   const [firstName, setfirstName] = useState("");
   const [lastName, setlastName] = useState("");
-  const [password, setpassword] = useState("Neeraj#789");
+  const [password, setpassword] = useState("");
   const [isLogIn, setisLogIn] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -120,7 +120,7 @@ function Login() {
             value={emailId}
             onChange={(e) => setemailId(e.target.value)}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-            placeholder="name@company.com"
+            placeholder="your@company.com"
             required
           />
         </div>
