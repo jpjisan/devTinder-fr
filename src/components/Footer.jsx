@@ -34,6 +34,7 @@ function Footer() {
             <Linkedin />
           </Link>
         </div>
+        <p className="mt-2">© 2025 Jp Jisan. All rights reserved.</p>
       </nav>
     </footer>
   );

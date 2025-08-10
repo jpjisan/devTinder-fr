@@ -10,6 +10,7 @@ import Connections from "./components/Connections";
 import Requests from "./components/Requests";
 import Stack from "./components/Stack";
 import ResetPassword from "./components/ResetPassword";
+import Chat from "./components/Chat";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
               <Route path="/connections" element={<Connections />}></Route>
               <Route path="/requests" element={<Requests />}></Route>
               <Route path="/stack" element={<Stack />}></Route>
+              <Route path="/chat/:targetUserId" element={<Chat />}></Route>
             </Route>
           </Routes>
         </BrowserRouter>

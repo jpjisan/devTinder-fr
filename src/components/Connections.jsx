@@ -12,6 +12,7 @@ import {
   Dot,
   Star,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 function Connections() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -139,10 +140,13 @@ function Connections() {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all duration-200 transform translate-x-2 group-hover:translate-x-0">
-                    <button className="p-2 rounded-lg bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 hover:text-blue-300 transition-all duration-200 hover:scale-110">
+                  <div className="flex items-center gap-1  transition-all duration-200 transform translate-x-2 group-hover:translate-x-0">
+                    <Link
+                      to={`/chat/${user._id}`}
+                      className="p-2 rounded-lg bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 hover:text-blue-300 transition-all duration-200 hover:scale-110"
+                    >
                       <MessageCircle className="w-4 h-4" />
-                    </button>
+                    </Link>
                     <button className="p-2 rounded-lg bg-slate-600/30 hover:bg-slate-500/50 text-slate-400 hover:text-slate-300 transition-all duration-200 hover:scale-110">
                       <MoreHorizontal className="w-4 h-4" />
                     </button>
