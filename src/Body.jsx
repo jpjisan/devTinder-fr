@@ -15,22 +15,24 @@ function Body() {
   // console.log("user from body ", user);
   const getUser = async () => {
     try {
-      if (!user) {
-        const res = await axios.get(BASE_URL + "/profile/view", {
-          withCredentials: true,
-        });
-        dispatch(setUser(res.data));
-      }
+      const res = await axios.get(BASE_URL + "/profile/view", {
+        withCredentials: true,
+      });
+      dispatch(setUser(res.data));
     } catch (error) {
-      if (error.status === 401) {
+      if (error?.response?.status === 401 || error?.status === 401) {
+        dispatch(setUser(null));
         return navigate("/login");
       }
       console.log("errror:", error);
     }
   };
+  
   useEffect(() => {
-    getUser();
-  }, []);
+    if (!user) {
+      getUser();
+    }
+  }, [user]);
 
   return (
     <div className="min-h-screen w-full overflow-x-hidden">

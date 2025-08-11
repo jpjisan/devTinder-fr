@@ -8,9 +8,10 @@ import {
   MoreVertical,
   Wifi,
   WifiOff,
+  ChevronLeft,
 } from "lucide-react";
 import { createSocketConnetion } from "../utils/socket";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setConnection } from "../utils/connectionSlice";
 import axios from "axios";
@@ -18,6 +19,7 @@ import { BASE_URL } from "../Base";
 import Loading from "./Loading";
 
 export default function ChatComponent() {
+  const navigate = useNavigate();
   // Redux setup
   const dispatch = useDispatch();
   const { targetUserId } = useParams();
@@ -33,7 +35,7 @@ export default function ChatComponent() {
   // Socket.IO state
   const [messages, setMessages] = useState([]);
   const [isConnected, setIsConnected] = useState(true);
-  const [isRecipientOnline, setIsRecipientOnline] = useState(true);
+  const [isRecipientOnline, setIsRecipientOnline] = useState(false);
   const [isRecipientTyping, setIsRecipientTyping] = useState(false);
   const [lastSeen, setLastSeen] = useState(new Date());
   const [targetUser, setTargetUser] = useState(null);
@@ -62,6 +64,7 @@ export default function ChatComponent() {
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
   const typingTimeoutRef = useRef(null);
+  const socketRef = useRef(null);
 
   useEffect(() => {
     fetchMessages();
@@ -87,31 +90,29 @@ export default function ChatComponent() {
     if (!userId) return;
 
     const socket = createSocketConnetion();
+    socketRef.current = socket;
 
-    // socket.on("connect", () => setIsConnected(true));
-    // socket.on("disconnect", () => setIsConnected(false));
-    // socket.on("private-message", handleNewMessage);
-    // socket.on("user-typing", ({ userId: typingUserId }) => {
-    //   if (typingUserId === targetUserId) setIsRecipientTyping(true);
-    // });
-    // socket.on("user-stopped-typing", ({ userId: stoppedTypingUserId }) => {
-    //   if (stoppedTypingUserId === targetUserId) setIsRecipientTyping(false);
-    // });
-    // socket.on("user-online", ({ userId: onlineUserId }) => {
-    //   if (onlineUserId === targetUserId) setIsRecipientOnline(true);
-    // });
-    // socket.on(
-    //   "user-offline",
-    //   ({ userId: offlineUserId, lastSeen: userLastSeen }) => {
-    //     if (offlineUserId === targetUserId) {
-    //       setIsRecipientOnline(false);
-    //       setLastSeen(new Date(userLastSeen));
-    //     }
-    //   }
-    // );
-    // socket.on("message-read", ({ messageId }) => {
-    //   updateMessageStatus(messageId, "read");
-    // });
+    socket.on("user-typing", ({ userId: typingUserId }) => {
+      if (typingUserId === targetUserId) setIsRecipientTyping(true);
+    });
+    socket.on("user-stopped-typing", ({ userId: stoppedTypingUserId }) => {
+      if (stoppedTypingUserId === targetUserId) setIsRecipientTyping(false);
+    });
+    socket.on("user-online", ({ userId: onlineUserId }) => {
+      if (onlineUserId === targetUserId) setIsRecipientOnline(true);
+    });
+    socket.on(
+      "user-offline",
+      ({ userId: offlineUserId, lastSeen: userLastSeen }) => {
+        if (offlineUserId === targetUserId) {
+          setIsRecipientOnline(false);
+          setLastSeen(new Date(userLastSeen));
+        }
+      }
+    );
+    socket.on("message-read", ({ messageId }) => {
+      updateMessageStatus(messageId, "read");
+    });
 
     socket.emit("joinChat", {
       firstName: user.firstName,
@@ -125,6 +126,7 @@ export default function ChatComponent() {
 
     return () => {
       socket.disconnect();
+      socketRef.current = null;
     };
   }, [userId, targetUserId, user?.firstName]);
   // FIX 7: Include targetUser in dependencies
@@ -146,21 +148,14 @@ export default function ChatComponent() {
     if (inputValue.trim() === "" || !isConnected) return;
 
     const newMessage = {
-      // id: Date.now(),
-      // senderId: userId,
-      // reciverId: targetUserId,
       text: inputValue,
       status: "sent",
-      // timestamp: new Date(),
     };
 
-    // setMessages((prev) => [...prev, newMessage]);
     setInputValue("");
     handleStopTyping();
 
-    // FIX 8: Emit message via socket if connected
-    const socket = createSocketConnetion();
-    socket.emit("sendMassge", {
+    socketRef.current?.emit("sendMassge", {
       firstName: user?.firstName,
       userId,
       targetUserId,
@@ -174,9 +169,7 @@ export default function ChatComponent() {
 
     if (!isTyping) {
       setIsTyping(true);
-      // Emit typing event
-      // const socket = createSocketConnetion();
-      // socket.emit("user-typing", { targetUserId });
+      socketRef.current?.emit("user-typing", { targetUserId });
     }
 
     if (typingTimeoutRef.current) {
@@ -191,9 +184,7 @@ export default function ChatComponent() {
   const handleStopTyping = () => {
     if (isTyping) {
       setIsTyping(false);
-      // Emit stop typing event
-      // const socket = createSocketConnetion();
-      // socket.emit("user-stopped-typing", { targetUserId });
+      socketRef.current?.emit("user-stopped-typing", { targetUserId });
     }
   };
 
@@ -270,8 +261,16 @@ export default function ChatComponent() {
     messages && (
       <div className="flex flex-col h-full lg:w-1/3 w-md mx-auto bg-white border border-gray-200 rounded-lg shadow-lg">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gray-50 rounded-t-lg">
-          <div className="flex items-center space-x-3">
+        <div className="flex items-center justify-between py-5 pr-2 border-b  border-gray-200 bg-gray-50 rounded-t-lg">
+          <div className="flex items-center space-x-2">
+            <div
+              onClick={() => {
+                navigate(-1);
+              }}
+              className=" px-1 py-2"
+            >
+              <ChevronLeft size={30} color="#000000" />
+            </div>
             <div className="relative">
               <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
                 <img

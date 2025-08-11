@@ -50,12 +50,20 @@ function Feed() {
     setIsLoading(true);
     fetchFeed();
   }, []);
-  if (users.length <= 0) {
-    return <h1>No more Users left</h1>;
+
+  if (isLoading) {
+    return <Loading text="Loading Feed" />;
   }
-  return isLoading ? (
-    <Loading />
-  ) : (
+
+  if (users.length <= 0) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <h1 className="text-xl text-gray-600">No more users left</h1>
+      </div>
+    );
+  }
+
+  return (
     <div className=" h-full  md:w-[] flex items-center justify-center p-4 relative">
       {/* Card Stack Container */}
       <div className="relative h-[70%] w-full md:w-[70%] md:h-[80%] max-w-sm">

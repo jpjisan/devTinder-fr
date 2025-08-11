@@ -17,17 +17,28 @@ function NavBar() {
       await axios.post(BASE_URL + "/logout", {}, { withCredentials: true });
       dispatch(removeUser());
       setOpen(false);
+      // Clear any local storage if used
+      localStorage.clear();
+      sessionStorage.clear();
       return navigate("/login");
     } catch (error) {
-      console.log("error");
+      // Even if logout fails, clear user state
+      dispatch(removeUser());
+      localStorage.clear();
+      sessionStorage.clear();
+      navigate("/login");
     }
   };
 
   return (
     <div className="navbar bg-base-300  shadow-sm">
       <div className="flex-1 ">
-        <Link to="/" className="btn btn-ghost bg-zinc-700  text-xl">
-          devMeet
+        <Link to="/" className="btn btn-ghost  ">
+          <img
+            className=" scale-125 md:scale-110 w-40"
+            src="/logo.png"
+            alt=""
+          />
         </Link>
       </div>
       {user && (
