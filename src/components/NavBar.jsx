@@ -1,9 +1,10 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { BASE_URL } from "../Base";
 import { removeUser } from "../utils/userSlice";
+import { House, MessageSquareMore } from "lucide-react";
 
 function NavBar() {
   const user = useSelector((store) => store.user);
@@ -30,11 +31,37 @@ function NavBar() {
         </Link>
       </div>
       {user && (
-        <div className="flex gap-2 mx-5 items-center">
+        <div className="flex md:gap-10 md:mx-6 justify-between  items-center">
+          <div className=" flex md:gap-6 mx-5  items-center">
+            <NavLink
+              className={({ isActive }) =>
+                `hidden md:block p-2 rounded ${
+                  isActive
+                    ? " text-blue-500"
+                    : "text-gray-400 hover:text-gray-200"
+                }`
+              }
+              to={"/"}
+            >
+              <House size={32} />
+            </NavLink>
+            <NavLink
+              className={({ isActive }) =>
+                `p-2 rounded ${
+                  isActive
+                    ? " text-blue-500"
+                    : "text-gray-400 hover:text-gray-200"
+                }`
+              }
+              to={"/chat"}
+            >
+              <MessageSquareMore size={34} />
+            </NavLink>
+          </div>
           <div className="dropdown dropdown-end gap-2 flex">
             <div className="flex items-center justify-center">
               <p className="font-semibold capitalize">
-                Welcome, {user.firstName}
+                Hello, {user.firstName}
               </p>
             </div>
 
@@ -54,8 +81,17 @@ function NavBar() {
             {open && (
               <ul
                 tabIndex={0}
-                className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+                className="menu md:menu-md menu-lg  dropdown-content bg-base-100 rounded-box z-1 mt-3 w-55 p-4 shadow"
               >
+                <li>
+                  <Link
+                    to="/"
+                    className="justify-between"
+                    onClick={() => setOpen(false)}
+                  >
+                    Home
+                  </Link>
+                </li>
                 <li>
                   <Link
                     to="/profile"

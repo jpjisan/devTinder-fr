@@ -15,7 +15,7 @@ import {
 import { Link } from "react-router-dom";
 import Loading from "./Loading";
 
-function Connections() {
+export default function HomeChat() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(true); // FIX 2: Add loading state
 
@@ -53,7 +53,7 @@ function Connections() {
   }, []);
 
   return (
-    <div className="h-[95%] lg:w-[30%] w-[95%] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-2xl shadow-2xl flex flex-col border border-slate-700/50 backdrop-blur-sm">
+    <div className="h-[95%] lg:w-[30%] w-full max-w-[95vw] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-2xl shadow-2xl flex flex-col border border-slate-700/50 backdrop-blur-sm">
       {/* Header with gradient */}
       <div className="p-6 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-t-2xl border-b border-slate-700/50">
         <div className="flex items-center justify-between mb-4">
@@ -98,9 +98,10 @@ function Connections() {
           {filteredConnections.length > 0 ? (
             <div className="space-y-2">
               {filteredConnections.map((user, idx) => (
-                <div
+                <Link
+                  to={`/chat/${user._id}`}
                   key={user._id || idx}
-                  className="group relative bg-slate-800/30 hover:bg-slate-700/50 backdrop-blur-sm rounded-xl p-4 transition-all duration-200 cursor-pointer border border-slate-700/30 hover:border-slate-600/50 hover:shadow-lg hover:shadow-blue-500/10"
+                  className="group block relative bg-slate-800/30 hover:bg-slate-700/50 backdrop-blur-sm rounded-xl p-4 transition-all duration-200 cursor-pointer border border-slate-700/30 hover:border-slate-600/50 hover:shadow-lg hover:shadow-blue-500/10"
                 >
                   {/* Subtle glow effect */}
                   <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-purple-500/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
@@ -127,26 +128,28 @@ function Connections() {
 
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
-                          <h3 className="text-sm font-medium text-white group-hover:text-blue-300 transition-colors">
+                          <h3 className="text-sm font-medium text-white group-hover:text-blue-300 transition-colors truncate">
                             {user.firstName} {user.lastName}
                           </h3>
+                          <h3 className="text-sm font-medium text-white group-hover:text-blue-300 transition-colors truncate"></h3>
+
                           {/* {user.isOnline && (
                           <Star className="w-3 h-3 text-emerald-400 fill-current" />
                         )} */}
                         </div>
-                        <div className="flex items-center gap-2 mt-1">
+                        {/* <div className="flex items-center gap-2 mt-1">
                           <span className="text-xs text-slate-400 capitalize">
                             {user.gender}
                           </span>
                           <Dot className="w-3 h-3 text-slate-600" />
-                          {/* <span className="text-xs text-slate-500">
+                          <span className="text-xs text-slate-500">
                           {user.lastSeen}
-                        </span> */}
-                        </div>
+                        </span>
+                        </div> */}
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-1  transition-all duration-200 transform translate-x-2 group-hover:translate-x-0">
+                    {/* <div className="flex items-center gap-1  transition-all duration-200 transform translate-x-2 group-hover:translate-x-0">
                       <Link
                         to={`/chat/${user._id}`}
                         className="p-2 rounded-lg bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 hover:text-blue-300 transition-all duration-200 hover:scale-110"
@@ -156,9 +159,9 @@ function Connections() {
                       <button className="p-2 rounded-lg bg-slate-600/30 hover:bg-slate-500/50 text-slate-400 hover:text-slate-300 transition-all duration-200 hover:scale-110">
                         <MoreHorizontal className="w-4 h-4" />
                       </button>
-                    </div>
+                    </div> */}
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           ) : (
@@ -203,5 +206,3 @@ function Connections() {
     // <div>kkdcskkd</div>
   );
 }
-
-export default Connections;

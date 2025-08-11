@@ -17,32 +17,23 @@ function Profile() {
 
   return (
     <>
-      <div className=" h-full  md:w-[] flex items-center justify-center p-4 relative">
+      <div className=" h-full w-screen   flex items-center justify-center p-4 relative">
         {/* Card Stack Container */}
-        <div className="relative h-[70%] w-full md:w-[70%] md:h-[80%] max-w-sm">
-          {/* Background Card */}
-          <div className="absolute inset-0 h-full bg-white rounded-3xl shadow-lg transform scale-95 opacity-50">
-            <img
-              src="https://images.pexels.com/photos/1040945/pexels-photo-1040945.jpeg?auto=compress&cs=tinysrgb&w=800"
-              alt="classNameic Denim Jacket"
-              className="w-full h-full object-cover rounded-t-3xl"
-            />
-          </div>
-
+        <div className="relative h-[70%] w-full md:w-[22%]   md:h-[80%] ">
           {/* Main Card */}
-          <div className="relative h-full  bg-white rounded-3xl shadow-2xl overflow-hidden">
+          <div className=" h-full w-full   bg-white rounded-3xl shadow-2xl overflow-hidden">
             {/* Product Image */}
-            <div className="relative h-full w-full">
+            <div className=" h-full w-full overflow-hidden md:w-full">
               <img
                 src={user?.profilePicture}
                 alt="user photo"
-                className="w-full h-full object-cover"
+                className="w-full overflow-hidden h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+              <div className=" rounded-3xl inset-0 bg-gradient-to-t from-black/20 to-transparent" />
             </div>
 
             {/* Product Info */}
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 text-white">
+            <div className="absolute rounded-b-3xl bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 text-white">
               <div className="flex items-end justify-between">
                 <div>
                   <div

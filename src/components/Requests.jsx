@@ -6,10 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { setRequests } from "../utils/requestSlice";
 
 import { Check, X, User, UserPlus, Clock } from "lucide-react";
+import Loading from "./Loading";
 
 function Requests() {
   const dispatch = useDispatch();
   const requests = useSelector((store) => store.requests);
+  const [isLoading, setIsLoading] = useState(true); // FIX 2: Add loading state
   // console.log(requests);
 
   const fetchRequests = async () => {
@@ -23,6 +25,7 @@ function Requests() {
       //   console.log(res?.data);
       // setusers(res?.data?.user);
       dispatch(setRequests(res?.data.data));
+      setIsLoading(false);
     } catch (error) {
       console.log("Error", error);
     }
@@ -108,7 +111,9 @@ function Requests() {
         </div>
 
         {/* Pending Requests */}
-        {requests.length > 0 && (
+        {isLoading ? (
+          <Loading text="Loading Requestes" />
+        ) : (
           <div className="p-6">
             <h2 className="text-lg  font-medium text-gray-100 mb-4 flex  items-center">
               <Clock className="w-5 h-5 text-gray-400 mr-2" />

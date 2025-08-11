@@ -5,9 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { BASE_URL } from "../Base";
 import { removeUserFromFeed, setFeed } from "../utils/feedSlice";
+
 import Loader from "./Loader";
+import Loading from "./Loading";
 function Feed() {
   const users = useSelector((store) => store.feed);
+
+  const [isLoading, setIsLoading] = useState(true); // FIX 2: Add loading state
   // console.log(users);
   const id = users?.[0]?._id;
   console.log(id);
@@ -22,6 +26,7 @@ function Feed() {
       // console.log("fetch", res);
 
       dispatch(setFeed(res.data));
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -29,6 +34,7 @@ function Feed() {
 
   const requestHandler = async (status, id) => {
     try {
+      setIsLoading(true);
       const res = await axios.post(
         BASE_URL + `/request/send/${status}/${id}`,
         {},
@@ -36,16 +42,19 @@ function Feed() {
       );
       dispatch(removeUserFromFeed(id));
       fetchFeed();
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
   useEffect(() => {
+    setIsLoading(true);
     fetchFeed();
   }, []);
   if (users.length <= 0) {
     return <h1>No more Users left</h1>;
   }
-  return !users ? (
-    <Loader />
+  return isLoading ? (
+    <Loading />
   ) : (
     <div className=" h-full  md:w-[] flex items-center justify-center p-4 relative">
       {/* Card Stack Container */}

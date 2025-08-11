@@ -33,7 +33,7 @@ function Body() {
   }, []);
 
   return (
-    <div>
+    <div className="min-h-screen w-full overflow-x-hidden">
       <NavBar />
       <div className="h-[90vh] flex items-center justify-center overflow-hidden">
         <Outlet />

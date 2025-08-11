@@ -15,6 +15,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setConnection } from "../utils/connectionSlice";
 import axios from "axios";
 import { BASE_URL } from "../Base";
+import Loading from "./Loading";
 
 export default function ChatComponent() {
   // Redux setup
@@ -30,48 +31,31 @@ export default function ChatComponent() {
   // console.log("allConnections from Redux:", allConnections);
 
   // Socket.IO state
+  const [messages, setMessages] = useState([]);
   const [isConnected, setIsConnected] = useState(true);
   const [isRecipientOnline, setIsRecipientOnline] = useState(true);
   const [isRecipientTyping, setIsRecipientTyping] = useState(false);
   const [lastSeen, setLastSeen] = useState(new Date());
   const [targetUser, setTargetUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true); // FIX 2: Add loading state
+  const fetchMessages = async () => {
+    const res = await axios.get(BASE_URL + `/chat/${targetUserId}`, {
+      withCredentials: true,
+    });
+    console.log("fecthmessages", res);
+    // console.log();
 
-  // Chat participants
+    // console.log("check", res?.data?.targetUser);
 
-  // FIX 3: Calculate recipient from targetUser state
+    setTargetUser(res?.data?.targetUser);
+    setMessages(res?.data?.chat?.messages);
+    setIsLoading(false);
+  };
+  // console.log("messages", messages);
+
+  // console.log(targetUser);
 
   // Chat state
-  const [messages, setMessages] = useState([
-    // {
-    //   id: 1,
-    //   text: "Hey! How are you doing?",
-    //   sender: targetUser?._id,
-    //   timestamp: new Date(Date.now() - 300000),
-    //   status: "delivered",
-    // },
-    // {
-    //   id: 2,
-    //   text: "I'm doing great! Just finished work. How about you?",
-    //   sender: user?._id,
-    //   timestamp: new Date(Date.now() - 240000),
-    //   status: "read",
-    // },
-    // {
-    //   id: 3,
-    //   text: "That's awesome! I'm just relaxing at home. Want to grab coffee tomorrow?",
-    //   sender: targetUser?._id,
-    //   timestamp: new Date(Date.now() - 180000),
-    //   status: "delivered",
-    // },
-    // {
-    //   id: 4,
-    //   text: "Sounds perfect! What time works for you?",
-    //   sender: user?._id,
-    //   timestamp: new Date(Date.now() - 120000),
-    //   status: "read",
-    // },
-  ]);
 
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
@@ -79,77 +63,9 @@ export default function ChatComponent() {
   const inputRef = useRef(null);
   const typingTimeoutRef = useRef(null);
 
-  // console.log("cuurentid", currentUser.id, "sender", messages[1].sender);
-
-  // FIX 4: Datch action to fetch connections on component mount
-  const fetchConnections = async () => {
-    if (allConnections.length > 0) {
-      return;
-    }
-    try {
-      const res = await axios.get(BASE_URL + "/user/connections", {
-        withCredentials: true,
-      });
-      // console.log(res?.data?.user);
-      // setusers(res?.data?.user);
-      dispatch(setConnection(res?.data?.user));
-    } catch (error) {
-      console.log("Error", error);
-    }
-  };
   useEffect(() => {
-    if (allConnections.length === 0) fetchConnections();
+    fetchMessages();
   }, []);
-
-  // FIX 5: Improved logic to find target user from connections
-  useEffect(() => {
-    // console.log(
-    //   "Effect running - allConnections:",
-    //   allConnections.length,
-    //   "targetUserId:",
-    //   targetUserId
-    // );
-
-    if (!targetUserId) {
-      setIsLoading(false);
-      return;
-    }
-
-    if (allConnections.length > 0) {
-      const foundUser = allConnections.find((connection) => {
-        // Handle different possible ID fields
-        return (
-          connection._id === targetUserId ||
-          connection.id === targetUserId ||
-          connection.userId === targetUserId
-        );
-      });
-
-      // console.log("foundUser:", foundUser);
-
-      if (foundUser) {
-        setTargetUser(foundUser);
-        setIsLoading(false);
-      } else {
-        // User not found in connections
-        setTargetUser(null);
-        setIsLoading(false);
-        // console.warn("Target user not found in connections:", targetUserId);
-      }
-    } else {
-      // Still waiting for connections to load
-      setIsLoading(true);
-    }
-  }, [allConnections, targetUserId]);
-
-  // FIX 6: Add effect to handle user state changes (for refresh scenarios)
-  // useEffect(() => {
-  //   if (!user && !userId) {
-  //     // User data not loaded yet, might need to fetch user info
-  //     console.log("User not loaded, dispatching user fetch action");
-  //     // dispatch({ type: "FETCH_USER_REQUEST" }); // Uncomment if needed
-  //   }
-  // }, [user, userId, dispatch]);
 
   // Scroll to bottom when messages change
   const scrollToBottom = () => {
@@ -202,15 +118,16 @@ export default function ChatComponent() {
       userId,
       targetUserId,
     });
-    socket.on("messageRecived", ({ firstName, message }) => {
-      console.log(firstName, message);
-      handleNewMessage(message);
+    socket.on("messageRecived", ({ firstName, lastmsg }) => {
+      console.log(firstName, lastmsg);
+      handleNewMessage(lastmsg);
     });
 
     return () => {
       socket.disconnect();
     };
-  }, [user, targetUser]); // FIX 7: Include targetUser in dependencies
+  }, [userId, targetUserId, user?.firstName]);
+  // FIX 7: Include targetUser in dependencies
 
   // Handle new message from socket
   const handleNewMessage = (messageData) => {
@@ -229,11 +146,12 @@ export default function ChatComponent() {
     if (inputValue.trim() === "" || !isConnected) return;
 
     const newMessage = {
-      id: Date.now(),
+      // id: Date.now(),
+      // senderId: userId,
+      // reciverId: targetUserId,
       text: inputValue,
-      sender: userId,
-      timestamp: new Date(),
       status: "sent",
+      // timestamp: new Date(),
     };
 
     // setMessages((prev) => [...prev, newMessage]);
@@ -321,14 +239,7 @@ export default function ChatComponent() {
 
   // FIX 9: Improved loading state handling
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-full">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
-          <p className="mt-2 text-gray-600">Loading chat...</p>
-        </div>
-      </div>
-    );
+    return <Loading text="Loading Chats" />;
   }
 
   // FIX 10: Better error handling
@@ -356,22 +267,18 @@ export default function ChatComponent() {
   }
 
   return (
-    user?._id &&
-    targetUserId && (
-      <div className="flex flex-col h-full max-w-2xl mx-auto bg-white border border-gray-200 rounded-lg shadow-lg">
+    messages && (
+      <div className="flex flex-col h-full lg:w-1/3 w-md mx-auto bg-white border border-gray-200 rounded-lg shadow-lg">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gray-50 rounded-t-lg">
           <div className="flex items-center space-x-3">
             <div className="relative">
               <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                <span className="text-white font-semibold">
-                  {targetUser?.firstName
-                    ? targetUser.firstName
-                        .split(" ")
-                        .map((n) => n[0])
-                        .join("")
-                    : "U"}
-                </span>
+                <img
+                  className="overflow-hidden rounded-full w-full h-full object-cover"
+                  src={targetUser?.profilePicture}
+                  alt=""
+                />
               </div>
               {isRecipientOnline && (
                 <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></div>
@@ -417,19 +324,19 @@ export default function ChatComponent() {
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
           {messages.map((message) => (
             <div
-              key={message.id}
+              key={message._id}
               className={`flex ${
-                message.sender === user?._id ? "justify-end" : "justify-start"
+                message.senderId === user?._id ? "justify-end" : "justify-start"
               }`}
             >
               <div
                 className={`max-w-xs lg:max-w-md ${
-                  message.sender === user?._id ? "text-right" : "text-left"
+                  message.senderId === user?._id ? "text-right" : "text-left"
                 }`}
               >
                 <div
                   className={`px-4 py-2 rounded-2xl ${
-                    message.sender === user?._id
+                    message.senderId === user?._id
                       ? "bg-blue-500 text-white rounded-br-md"
                       : "bg-gray-100 text-gray-800 rounded-bl-md"
                   }`}
@@ -438,9 +345,9 @@ export default function ChatComponent() {
                 </div>
                 <div className="flex items-center justify-between mt-1 px-2">
                   <p className="text-xs text-gray-500">
-                    {formatTime(message.timestamp)}
+                    {formatTime(message.createdAt)}
                   </p>
-                  {message.sender === user?._id && (
+                  {message.senderId === user?._id && (
                     <span
                       className={`text-xs ml-2 ${getStatusColor(
                         message.status
