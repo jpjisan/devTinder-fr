@@ -4,6 +4,6 @@ export const createSocketConnetion = () => {
   if (location.hostname === "localhost") {
     return io(BASE_URL);
   } else {
-    return io("https://devpalace.netlify.app", { path: "/socket.oi" });
+    return io("https://devpalace.netlify.app", { path: "/socket.io" });
   }
 };
